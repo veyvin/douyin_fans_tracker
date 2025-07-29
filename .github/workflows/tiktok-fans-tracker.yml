@@ -38,7 +38,7 @@ jobs:
           mkdir chrome && cd chrome
           wget "$BROWSER_URL" -O chrome-linux.zip
           unzip chrome-linux.zip
-          sudo mv chrome-linux /opt/chrome
+          sudo mv chrome-linux64 /opt/chrome
           sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
           cd ..
 
@@ -47,6 +47,7 @@ jobs:
           unzip chromedriver.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
+
 
       - name: Run tracker script
         run: python tiktok_fans_tracker.py
