@@ -1,0 +1,2 @@
+2025-07-29 13:25:11 - 浏览器初始化失败: Message: Unable to obtain driver for chrome; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location
+
