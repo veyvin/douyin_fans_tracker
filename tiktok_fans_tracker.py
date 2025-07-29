@@ -4,6 +4,8 @@ import os
 import sys
 from datetime import datetime
 import matplotlib.pyplot as plt
+import chromedriver_autoinstaller
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -19,6 +21,9 @@ LOG_FILE = "error_log.txt"
 
 def setup_driver():
     """配置浏览器驱动"""
+    # 自动安装匹配版本的 chromedriver
+    chromedriver_autoinstaller.install()
+
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-gpu")
@@ -26,10 +31,7 @@ def setup_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-    
-    # 在GitHub Actions环境中需要明确指定二进制位置
-    chrome_options.binary_location = "/usr/bin/chromium-browser"
-    
+
     try:
         driver = webdriver.Chrome(options=chrome_options)
         return driver
@@ -49,17 +51,15 @@ def get_fans_count(driver):
     try:
         url = f"https://www.douyin.com/user/{TIKTOK_USER_ID}"
         driver.get(url)
-        
-        # 使用更健壮的等待策略
+
         wait = WebDriverWait(driver, 30)
-        
-        # 尝试多种定位方式
+
         selectors = [
             "//div[contains(@class, 'count-infos')]//span[contains(text(), '粉丝')]/../span[2]",
             "//div[contains(text(), '粉丝')]/following-sibling::div",
             "//span[contains(text(), '粉丝')]/following-sibling::span"
         ]
-        
+
         for selector in selectors:
             try:
                 element = wait.until(EC.presence_of_element_located((By.XPATH, selector)))
@@ -70,14 +70,14 @@ def get_fans_count(driver):
                 continue
         else:
             raise NoSuchElementException("无法定位粉丝数元素")
-        
+
         print(f"原始粉丝文本: {fans_text}")
-        
-        # 处理不同格式的粉丝数
+
+        # 处理粉丝数格式
         if '万' in fans_text:
             return int(float(fans_text.replace('万', '')) * 10000)
         return int(fans_text.replace(',', ''))
-        
+
     except Exception as e:
         log_error(f"获取粉丝数时出错: {str(e)}")
         return None
@@ -127,7 +127,7 @@ def generate_chart():
         plt.savefig(IMAGE_FILE, dpi=300, bbox_inches='tight')
         plt.close()
         print("图表生成成功")
-        
+
     except Exception as e:
         log_error(f"生成图表时出错: {str(e)}")
 
@@ -136,13 +136,13 @@ def main():
     driver = setup_driver()
     if not driver:
         sys.exit(1)
-        
+
     try:
         for attempt in range(3):
             print(f"尝试第 {attempt + 1} 次...")
             fans_count = get_fans_count(driver)
             if fans_count is not None:
-                timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
                 print(f"成功获取: {timestamp} - {fans_count} 粉丝")
                 save_to_csv(timestamp, fans_count)
                 generate_chart()

@@ -2,40 +2,36 @@ name: TikTok Fans Tracker & Deploy to GH Pages
 
 on:
   schedule:
-    # 每小时执行一次（UTC时间）
-    - cron: '0 * * * *'
-  workflow_dispatch:  # 允许手动触发
+    - cron: '0 * * * *'  # 每小时执行一次（UTC）
+  workflow_dispatch:      # 支持手动触发
 
 jobs:
   track-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      
-      - name: Install dependencies
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install selenium pandas matplotlib
-          # 安装Chrome浏览器
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          # 安装ChromeDriver
-          CHROME_VERSION=$(chromium-browser --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-          wget https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-      
+          pip install selenium pandas matplotlib chromedriver-autoinstaller
+
       - name: Run tracker script
-        run: python tiktok_fans_tracker.py
-      
+        env:
+          DISPLAY: ":99"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          Xvfb :99 &
+          python tiktok_fans_tracker.py
+
       - name: Create index.html for GH Pages
         run: |
           echo "<!DOCTYPE html>" > index.html
@@ -63,16 +59,15 @@ jobs:
           echo "  <h2>最新数据</h2>" >> index.html
           echo "  <table class='data-table'>" >> index.html
           echo "    <tr><th>时间</th><th>粉丝数量</th></tr>" >> index.html
-          # 添加最新的10条数据
-          echo "$(tail -n 11 fans_data.csv | sed '1d' | awk -F ',' '{printf "    <tr><td>%s</td><td>%s</td></tr>\n", $1, $2}')" >> index.html
+          echo "$(tail -n 11 fans_data.csv | sed '1d' | awk -F ',' '{printf \"    <tr><td>%s</td><td>%s</td></tr>\\n\", \$1, \$2}')" >> index.html
           echo "  </table>" >> index.html
           echo "  <p class='last-update'>最后更新: $(date +'%Y-%m-%d %H:%M:%S') UTC</p>" >> index.html
           echo "</body>" >> index.html
           echo "</html>" >> index.html
-      
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
-          publish_branch: gh-pages  # 部署到gh-pages分支
+          publish_branch: gh-pages
