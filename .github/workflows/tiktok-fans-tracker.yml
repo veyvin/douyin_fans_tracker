@@ -47,7 +47,8 @@ jobs:
           unzip chromedriver.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
-
+          git rm --cached chrome/chrome-linux.zip
+          rm chrome/chromedriver.zip
 
 
       - name: Run tracker script
