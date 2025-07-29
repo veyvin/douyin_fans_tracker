@@ -51,7 +51,18 @@ jobs:
           sudo chmod +x /usr/local/bin/chromedriver
 
 
+      - name: Check Chrome and ChromeDriver installation
+        run: |
+          echo "==> Chrome version:"
+          google-chrome --version || chromium-browser --version || echo "Chrome not found"
 
+          echo "==> ChromeDriver version:"
+          chromedriver --version || echo "ChromeDriver not found"
+
+          echo "==> Check ChromeDriver compatibility:"
+          which chromedriver
+          which google-chrome || which chromium-browser
+          
       - name: Run tracker script
         run: python tiktok_fans_tracker.py
 
