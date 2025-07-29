@@ -38,6 +38,7 @@ jobs:
           mkdir chrome && cd chrome
           wget "$BROWSER_URL" -O chrome-linux.zip
           unzip chrome-linux.zip
+          rm chrome-linux.zip
           sudo mv chrome-linux64 /opt/chrome
           sudo ln -sf /opt/chrome/chrome /usr/bin/google-chrome  # 强制覆盖
           cd ..
