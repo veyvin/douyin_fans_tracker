@@ -64,7 +64,18 @@ jobs:
           which google-chrome || which chromium-browser
 
       - name: Run tracker script
-        run: python tiktok_fans_tracker.py
+        id: run-script
+        run: |
+          python tiktok_fans_tracker.py || echo "Tracker failed" >> debug_page.html
+
+      - name: Ensure debug_page.html exists if failed
+        if: failure()
+        run: |
+          echo "<!DOCTYPE html><html><body><h1>脚本执行失败</h1>" > debug_page.html
+          echo "<pre>" >> debug_page.html
+          tail -n 100 /home/runner/work/_temp/_runner_file_commands/* >> debug_page.html || echo "无日志" >> debug_page.html
+          echo "</pre></body></html>" >> debug_page.html
+
 
       - name: Create index.html for GH Pages
         run: |
@@ -105,7 +116,7 @@ jobs:
         with:
           name: debug-page
           path: debug_page.html
-          
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
