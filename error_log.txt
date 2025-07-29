@@ -1,9 +1,90 @@
 2025-07-29 13:25:11 - 浏览器初始化失败: Message: Unable to obtain driver for chrome; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location
 
-2025-07-29 07:16:25 - 获取粉丝数时出错: Message: 无法定位粉丝数元素; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+2025-07-29 16:24:07 - 获取粉丝数时出错: Message: tab crashed
+  (Session info: chrome=138.0.7204.168)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff78953e935+77845]
+	GetHandleVerifier [0x0x7ff78953e990+77936]
+	(No symbol) [0x0x7ff7892f9b0c]
+	(No symbol) [0x0x7ff7892e727b]
+	(No symbol) [0x0x7ff7892e4eab]
+	(No symbol) [0x0x7ff7892e590f]
+	(No symbol) [0x0x7ff7892f453e]
+	(No symbol) [0x0x7ff78930a4f1]
+	(No symbol) [0x0x7ff78931165a]
+	(No symbol) [0x0x7ff7892e60ad]
+	(No symbol) [0x0x7ff789309ce1]
+	(No symbol) [0x0x7ff7893a09e1]
+	(No symbol) [0x0x7ff7893786a3]
+	(No symbol) [0x0x7ff789341791]
+	(No symbol) [0x0x7ff789342523]
+	GetHandleVerifier [0x0x7ff78981684d+3059501]
+	GetHandleVerifier [0x0x7ff789810c0d+3035885]
+	GetHandleVerifier [0x0x7ff789830400+3164896]
+	GetHandleVerifier [0x0x7ff789558c3e+185118]
+	GetHandleVerifier [0x0x7ff78956054f+216111]
+	GetHandleVerifier [0x0x7ff7895472e4+113092]
+	GetHandleVerifier [0x0x7ff789547499+113529]
+	GetHandleVerifier [0x0x7ff78952e298+10616]
+	BaseThreadInitThunk [0x0x7ffff34ae8d7+23]
+	RtlUserThreadStart [0x0x7ffff493c34c+44]
 
-2025-07-29 07:18:01 - 获取粉丝数时出错: Message: 无法定位粉丝数元素; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+2025-07-29 16:24:12 - 获取粉丝数时出错: Message: tab crashed
+  (Session info: chrome=138.0.7204.168)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff78953e935+77845]
+	GetHandleVerifier [0x0x7ff78953e990+77936]
+	(No symbol) [0x0x7ff7892f9b0c]
+	(No symbol) [0x0x7ff7892e727b]
+	(No symbol) [0x0x7ff7892e4eab]
+	(No symbol) [0x0x7ff7892e590f]
+	(No symbol) [0x0x7ff7892f453e]
+	(No symbol) [0x0x7ff78930a4f1]
+	(No symbol) [0x0x7ff78931165a]
+	(No symbol) [0x0x7ff7892e60ad]
+	(No symbol) [0x0x7ff789309ce1]
+	(No symbol) [0x0x7ff7893a09e1]
+	(No symbol) [0x0x7ff7893786a3]
+	(No symbol) [0x0x7ff789341791]
+	(No symbol) [0x0x7ff789342523]
+	GetHandleVerifier [0x0x7ff78981684d+3059501]
+	GetHandleVerifier [0x0x7ff789810c0d+3035885]
+	GetHandleVerifier [0x0x7ff789830400+3164896]
+	GetHandleVerifier [0x0x7ff789558c3e+185118]
+	GetHandleVerifier [0x0x7ff78956054f+216111]
+	GetHandleVerifier [0x0x7ff7895472e4+113092]
+	GetHandleVerifier [0x0x7ff789547499+113529]
+	GetHandleVerifier [0x0x7ff78952e298+10616]
+	BaseThreadInitThunk [0x0x7ffff34ae8d7+23]
+	RtlUserThreadStart [0x0x7ffff493c34c+44]
 
-2025-07-29 07:19:38 - 获取粉丝数时出错: Message: 无法定位粉丝数元素; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+2025-07-29 16:24:17 - 获取粉丝数时出错: Message: tab crashed
+  (Session info: chrome=138.0.7204.168)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff78953e935+77845]
+	GetHandleVerifier [0x0x7ff78953e990+77936]
+	(No symbol) [0x0x7ff7892f9b0c]
+	(No symbol) [0x0x7ff7892e727b]
+	(No symbol) [0x0x7ff7892e4eab]
+	(No symbol) [0x0x7ff7892e590f]
+	(No symbol) [0x0x7ff7892f453e]
+	(No symbol) [0x0x7ff78930a4f1]
+	(No symbol) [0x0x7ff78931165a]
+	(No symbol) [0x0x7ff7892e60ad]
+	(No symbol) [0x0x7ff789309ce1]
+	(No symbol) [0x0x7ff7893a09e1]
+	(No symbol) [0x0x7ff7893786a3]
+	(No symbol) [0x0x7ff789341791]
+	(No symbol) [0x0x7ff789342523]
+	GetHandleVerifier [0x0x7ff78981684d+3059501]
+	GetHandleVerifier [0x0x7ff789810c0d+3035885]
+	GetHandleVerifier [0x0x7ff789830400+3164896]
+	GetHandleVerifier [0x0x7ff789558c3e+185118]
+	GetHandleVerifier [0x0x7ff78956054f+216111]
+	GetHandleVerifier [0x0x7ff7895472e4+113092]
+	GetHandleVerifier [0x0x7ff789547499+113529]
+	GetHandleVerifier [0x0x7ff78952e298+10616]
+	BaseThreadInitThunk [0x0x7ffff34ae8d7+23]
+	RtlUserThreadStart [0x0x7ffff493c34c+44]
 
-2025-07-29 07:19:43 - 3次尝试后仍失败
+2025-07-29 16:24:22 - 3次尝试后仍失败
