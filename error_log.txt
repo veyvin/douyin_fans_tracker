@@ -1,0 +1,9 @@
+2025-07-29 13:25:11 - 浏览器初始化失败: Message: Unable to obtain driver for chrome; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location
+
+2025-07-29 06:17:13 - 获取粉丝数时出错: Message: 无法定位粉丝数元素; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+
+2025-07-29 06:18:50 - 获取粉丝数时出错: Message: 无法定位粉丝数元素; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+
+2025-07-29 06:20:26 - 获取粉丝数时出错: Message: 无法定位粉丝数元素; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+
+2025-07-29 06:20:31 - 3次尝试后仍失败
