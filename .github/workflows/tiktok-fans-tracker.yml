@@ -39,7 +39,7 @@ jobs:
           wget "$BROWSER_URL" -O chrome-linux.zip
           unzip chrome-linux.zip
           sudo mv chrome-linux64 /opt/chrome
-          sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
+          sudo ln -sf /opt/chrome/chrome /usr/bin/google-chrome  # 强制覆盖
           cd ..
 
           # 安装 ChromeDriver
@@ -47,6 +47,7 @@ jobs:
           unzip chromedriver.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
+
 
 
       - name: Run tracker script
