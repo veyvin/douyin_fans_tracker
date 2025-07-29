@@ -2,8 +2,8 @@ name: TikTok Fans Tracker & Deploy to GH Pages
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 每小时执行一次（UTC）
-  workflow_dispatch:      # 支持手动触发
+    - cron: '0 * * * *'  # 每小时执行一次（UTC时间）
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   track-and-deploy:
@@ -16,47 +16,40 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install selenium pandas matplotlib chromedriver-autoinstaller
+          pip install selenium pandas matplotlib
 
-      - name: Install Google Chrome
+      - name: Install Chrome and ChromeDriver
         run: |
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+          sudo apt-get update
+          sudo apt-get install -y wget unzip curl jq
 
-      - name: Install chromedriver (Chrome for Testing)
-        run: |
-          sudo apt-get install -y jq curl unzip
-          
-          CHROME_VERSION=$(google-chrome --version | grep -oP "\d+\.\d+\.\d+\.\d+")
-          echo "Detected Chrome version: $CHROME_VERSION"
-          
-          JSON_URL="https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json"
-          DRIVER_URL=$(curl -s "$JSON_URL" | jq -r --arg ver "$CHROME_VERSION" '.channels | to_entries[] | select(.value.version==$ver) | .value.downloads.chromedriver[] | select(.platform=="linux64") | .url')
+          # 获取最新版 Chrome 和 ChromeDriver 下载地址
+          LATEST_JSON=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json)
+          CHROME_VERSION=$(echo "$LATEST_JSON" | jq -r '.channels.Stable.version')
+          DRIVER_URL=$(echo "$LATEST_JSON" | jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url')
+          BROWSER_URL=$(echo "$LATEST_JSON" | jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64") | .url')
 
-          if [ -z "$DRIVER_URL" ]; then
-            echo "❌ No matching ChromeDriver found for version $CHROME_VERSION"
-            exit 1
-          fi
+          # 安装 Chrome 浏览器
+          mkdir chrome && cd chrome
+          wget "$BROWSER_URL" -O chrome-linux.zip
+          unzip chrome-linux.zip
+          sudo mv chrome-linux /opt/chrome
+          sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
+          cd ..
 
-          echo "Downloading ChromeDriver from: $DRIVER_URL"
-          wget -O chromedriver.zip "$DRIVER_URL"
+          # 安装 ChromeDriver
+          wget "$DRIVER_URL" -O chromedriver.zip
           unzip chromedriver.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
-
       - name: Run tracker script
-        env:
-          DISPLAY: ":99"
-        run: |
-          sudo apt-get install -y xvfb
-          Xvfb :99 &
-          python tiktok_fans_tracker.py
+        run: python tiktok_fans_tracker.py
 
       - name: Create index.html for GH Pages
         run: |
@@ -85,7 +78,7 @@ jobs:
           echo "  <h2>最新数据</h2>" >> index.html
           echo "  <table class='data-table'>" >> index.html
           echo "    <tr><th>时间</th><th>粉丝数量</th></tr>" >> index.html
-          echo "$(tail -n 11 fans_data.csv | sed '1d' | awk -F ',' '{printf \"    <tr><td>%s</td><td>%s</td></tr>\\n\", \$1, \$2}')" >> index.html
+          echo "$(tail -n 11 fans_data.csv | sed '1d' | awk -F ',' '{printf "    <tr><td>%s</td><td>%s</td></tr>\n", $1, $2}')" >> index.html
           echo "  </table>" >> index.html
           echo "  <p class='last-update'>最后更新: $(date +'%Y-%m-%d %H:%M:%S') UTC</p>" >> index.html
           echo "</body>" >> index.html
