@@ -59,9 +59,19 @@ def get_fans_count():
         
     except Exception as e:
         print(f"获取粉丝数失败: {str(e)}")
+
+        # 保存调试页面以便分析错误
+        import os, shutil
+        debug_path = "/home/runner/.cache/selenium/chrome/debug_page.html"
+        if os.path.exists(debug_path):
+            shutil.copy(debug_path, "./debug_page.html")
+            print("调试页面已保存到 debug_page.html")
+            
         return None
+        
     finally:
         driver.quit()
+
 
 def save_to_csv(timestamp, fans_count):
     """将粉丝数据保存到CSV文件"""
