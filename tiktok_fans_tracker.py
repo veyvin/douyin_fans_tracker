@@ -16,10 +16,9 @@ CSV_FILE = "fans_data.csv"  # 数据存储文件
 IMAGE_FILE = "fans_trend.png"  # 图表存储文件
 
 def get_fans_count():
-    """获取抖音主播的粉丝数量"""
+    """获取抖音主播的粉丝数量（带调试输出）"""
     print(f"开始获取抖音主播 {TIKTOK_USER_ID} 的粉丝数...")
-    
-    # 配置Chrome浏览器选项
+
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-gpu")
@@ -28,49 +27,62 @@ def get_fans_count():
     chrome_options.add_argument("--disable-software-rasterizer")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--silent")
-    
-    # 添加用户代理，避免被识别为自动化工具
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-    
-    # 初始化WebDriver
+    chrome_options.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    )
+
     driver = webdriver.Chrome(options=chrome_options)
-    
+
     try:
-        # 访问抖音用户主页
         url = f"https://www.douyin.com/user/{TIKTOK_USER_ID}"
+        print(f"访问地址: {url}")
         driver.get(url)
-        
-        # 等待页面加载完成并找到粉丝数元素
-        wait = WebDriverWait(driver, 15)
+
+        print("等待页面初步加载...")
+        time.sleep(5)
+
+        print("尝试滚动页面加载更多内容")
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(3)
+
+        print("开始查找粉丝数元素...")
+        wait = WebDriverWait(driver, 40)
         fans_element = wait.until(
             EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '粉丝')]/following-sibling::div"))
         )
-        
-        # 提取粉丝数字符串并转换为整数
+
+        print("粉丝数元素已找到，提取文本...")
         fans_text = fans_element.text.strip()
         print(f"获取到粉丝数文本: {fans_text}")
-        
+
         if '万' in fans_text:
             fans_count = int(float(fans_text.replace('万', '')) * 10000)
         else:
             fans_count = int(fans_text)
-            
+
         return fans_count
-        
+
     except Exception as e:
         print(f"获取粉丝数失败: {str(e)}")
 
-        # 保存调试页面以便分析错误
-        import os, shutil
-        debug_path = "/home/runner/.cache/selenium/chrome/debug_page.html"
-        if os.path.exists(debug_path):
-            shutil.copy(debug_path, "./debug_page.html")
-            print("调试页面已保存到 debug_page.html")
-            
+        try:
+            print("保存截图 debug_screenshot.png...")
+            driver.save_screenshot("debug_screenshot.png")
+        except Exception as se:
+            print(f"保存截图失败: {str(se)}")
+
+        try:
+            print("保存 HTML 到 debug_page.html...")
+            with open("debug_page.html", "w", encoding="utf-8") as f:
+                f.write(driver.page_source)
+        except Exception as he:
+            print(f"保存 HTML 失败: {str(he)}")
+
         return None
-        
+
     finally:
         driver.quit()
+        print("已关闭浏览器")
 
 
 def save_to_csv(timestamp, fans_count):
