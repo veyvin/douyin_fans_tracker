@@ -18,6 +18,17 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Save Douyin HTML for debug
+        run: |
+          curl -s -L https://www.douyin.com/ -o douyin_home.html
+          head -n 20 douyin_home.html
+
+      - name: Upload Douyin HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: douyin-html
+          path: douyin_home.html
+          
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
