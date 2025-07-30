@@ -41,7 +41,7 @@ def get_fans_count():
         driver.get(url)
         
         # 等待页面加载完成并找到粉丝数元素
-        wait = WebDriverWait(driver, 15)
+        wait = WebDriverWait(driver, 40)
         fans_element = wait.until(
             EC.presence_of_element_located((By.XPATH, "//div[contains(text(), '粉丝')]/following-sibling::div"))
         )
