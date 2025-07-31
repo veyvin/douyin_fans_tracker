@@ -8,9 +8,7 @@ on:
 jobs:
   track-and-deploy:
     runs-on: ubuntu-latest
-    env:
-        HTTP_PROXY: http://113.108.13.120:4433
-        HTTPS_PROXY: http://113.108.13.120:4433
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -86,6 +84,9 @@ jobs:
       
       - name: Run tracker script
         id: run-script
+        env:
+          HTTP_PROXY: http://113.108.13.120:4433
+          HTTPS_PROXY: http://113.108.13.120:4433
         run: |
           # 从环境变量中获取代理
           echo "使用代理: $PROXY"
