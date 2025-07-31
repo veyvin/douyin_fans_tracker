@@ -1,6 +1,7 @@
 import time
 import csv
 import os
+import argparse  # 新增：用于解析命令行参数
 from datetime import datetime
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
@@ -15,11 +16,18 @@ TIKTOK_USER_ID = "MS4wLjABAAAACdtHOv8XS_X_PTuqJ3WReO4ka7pBWg7fmzG4wjiIZVkUKFOVtb
 CSV_FILE = "fans_data.csv"  # 数据存储文件
 IMAGE_FILE = "fans_trend.png"  # 图表存储文件
 
-def get_fans_count():
-    """获取抖音主播的粉丝数量（带调试输出）"""
+
+def get_fans_count(proxy=None):  # 新增：接收proxy参数
+    """获取抖音主播的粉丝数量（支持代理）"""
     print(f"开始获取抖音主播 {TIKTOK_USER_ID} 的粉丝数...")
+    print(f"使用代理: {proxy if proxy else '无'}")  # 打印代理状态
 
     chrome_options = Options()
+    # 新增：配置代理（如果有代理参数）
+    if proxy:
+        chrome_options.add_argument(f"--proxy-server={proxy}")
+    
+    # 原有浏览器配置
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
@@ -55,6 +63,7 @@ def get_fans_count():
         fans_text = fans_element.text.strip()
         print(f"获取到粉丝数文本: {fans_text}")
 
+        # 处理粉丝数格式（万/普通数字）
         if '万' in fans_text:
             fans_count = int(float(fans_text.replace('万', '')) * 10000)
         else:
@@ -65,6 +74,7 @@ def get_fans_count():
     except Exception as e:
         print(f"获取粉丝数失败: {str(e)}")
 
+        # 调试信息保存
         try:
             print("保存截图 debug_screenshot.png...")
             driver.save_screenshot("debug_screenshot.png")
@@ -94,6 +104,7 @@ def save_to_csv(timestamp, fans_count):
         if not file_exists:
             writer.writerow(['timestamp', 'fans_count'])
         writer.writerow([timestamp, fans_count])
+
 
 def generate_chart():
     """生成粉丝数量趋势图表"""
@@ -137,9 +148,16 @@ def generate_chart():
     except Exception as e:
         print(f"生成图表失败: {str(e)}")
 
+
 def main():
-    """主函数：协调获取数据、保存数据和生成图表的流程"""
-    fans_count = get_fans_count()
+    """主函数：解析参数并协调流程"""
+    # 新增：解析命令行参数（接收代理）
+    parser = argparse.ArgumentParser(description='抖音粉丝数跟踪工具（支持代理）')
+    parser.add_argument('--proxy', type=str, help='代理服务器地址（格式：http://ip:port）')
+    args = parser.parse_args()
+
+    # 传递代理参数给获取粉丝数的函数
+    fans_count = get_fans_count(proxy=args.proxy)
     if fans_count is not None:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         print(f"{timestamp} - 当前粉丝数: {fans_count}")
@@ -147,6 +165,7 @@ def main():
         generate_chart()
     else:
         print("未能获取粉丝数，不更新数据")
+
 
 if __name__ == "__main__":
     main()
