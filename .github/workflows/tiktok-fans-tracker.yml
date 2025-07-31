@@ -73,11 +73,22 @@ jobs:
           echo "==> Check ChromeDriver compatibility:"
           which chromedriver
           which google-chrome || which chromium-browser
-
+      - name: Get proxy from script
+        id: get-proxy
+        run: |
+            # 运行代理脚本，获取代理URL（假设脚本名为get_proxy.py）
+            PROXY=$(python get_proxy.py)
+            echo "获取到的代理: $PROXY"
+            # 保存代理到环境变量（供后续步骤使用）
+            echo "PROXY=$PROXY" >> $GITHUB_ENV
+      
       - name: Run tracker script
         id: run-script
         run: |
-          python tiktok_fans_tracker.py || echo "Tracker failed" >> debug_page.html
+          # 从环境变量中获取代理
+          echo "使用代理: $PROXY"
+          # 运行跟踪脚本，并传递代理参数
+          python tiktok_fans_tracker.py --proxy "$PROXY" || echo "Tracker failed" >> debug_page.html
 
       - name: Ensure debug_page.html exists if failed
         if: failure()
