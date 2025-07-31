@@ -8,7 +8,9 @@ on:
 jobs:
   track-and-deploy:
     runs-on: ubuntu-latest
-
+    env:
+        HTTP_PROXY: http://113.108.13.120:4433
+        HTTPS_PROXY: http://113.108.13.120:4433
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
