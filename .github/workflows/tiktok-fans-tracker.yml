@@ -18,9 +18,8 @@ jobs:
         with:
           oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
-          tags: tag:ci
           version: latest
-          
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
