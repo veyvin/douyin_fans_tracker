@@ -25,8 +25,9 @@ def get_fans_count(proxy=None):  # 新增：接收proxy参数
     chrome_options = Options()
     # 新增：配置代理（如果有代理参数）
     if proxy:
-        chrome_options.add_argument(f"--proxy-server={proxy}")
-    
+        chrome_options.add_argument(f"--proxy-server=http://100.108.141.117:3128")
+    chrome_options.add_argument('--proxy-bypass-list=localhost;127.0.0.1;::1')
+
     # 原有浏览器配置
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-gpu")

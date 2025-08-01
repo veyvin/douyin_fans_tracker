@@ -84,14 +84,12 @@ jobs:
       
       - name: Run tracker script
         id: run-script
-        env:
-          HTTP_PROXY: http://113.108.13.120:4433
-          HTTPS_PROXY: http://113.108.13.120:4433
+
         run: |
           # 从环境变量中获取代理
           echo "使用代理: $PROXY"
           # 运行跟踪脚本，并传递代理参数
-          python tiktok_fans_tracker.py --proxy "$PROXY" || echo "Tracker failed" >> debug_page.html
+          python tiktok_fans_tracker.py --proxy=http://100.108.141.117:3128 || echo "Tracker failed" >> debug_page.html
 
       - name: Ensure debug_page.html exists if failed
         if: failure()
