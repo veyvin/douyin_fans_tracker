@@ -13,7 +13,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: false  # 为后续提交步骤准备
+          persist-credentials: true  # 保留凭据（关键修改）
+          fetch-depth: 0  # 获取完整历史，避免提交冲突（关键修改）
 
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
@@ -91,8 +92,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "自动更新粉丝数据"
-          file_pattern: "fans_data.csv"  # 只提交粉丝数据文件
-          push_options: --force  # 确保能推送到分支
+          file_pattern: "fans_data.csv fans_trend.png"  # 同时提交图表（如果需要）
+          push_options: ""  # 移除 --force，避免强制推送导致问题（关键修改）
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用内置令牌授权
 
