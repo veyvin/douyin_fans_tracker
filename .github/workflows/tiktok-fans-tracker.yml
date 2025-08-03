@@ -2,7 +2,7 @@ name: TikTok Fans Tracker & Deploy to GH Pages
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 每小时执行一次（UTC时间）
+    - cron: '0 0 * * *' 
   workflow_dispatch:  # 允许手动触发
 
 jobs:
