@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # 为后续提交步骤准备
 
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
@@ -78,23 +80,21 @@ jobs:
           echo "==> Check ChromeDriver compatibility:"
           which chromedriver
           which google-chrome || which chromium-browser
-      # - name: Get proxy from script
-      #   id: get-proxy
-      #   run: |
-      #       # 运行代理脚本，获取代理URL（假设脚本名为get_proxy.py）
-      #       PROXY=$(python get_proxy.py)
-      #       echo "获取到的代理: $PROXY"
-      #       # 保存代理到环境变量（供后续步骤使用）
-      #       echo "PROXY=$PROXY" >> $GITHUB_ENV
       
       - name: Run tracker script
         id: run-script
-
         run: |
-          # 从环境变量中获取代理
-          echo "使用代理: $PROXY"
           # 运行跟踪脚本，并传递代理参数
           python tiktok_fans_tracker.py --proxy=http://100.108.141.117:3128 || echo "Tracker failed" >> debug_page.html
+
+      - name: 自动提交粉丝数据文件
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "自动更新粉丝数据"
+          file_pattern: "fans_data.csv"  # 只提交粉丝数据文件
+          push_options: --force  # 确保能推送到分支
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用内置令牌授权
 
       - name: Ensure debug_page.html exists if failed
         if: failure()
@@ -103,7 +103,6 @@ jobs:
           echo "<pre>" >> debug_page.html
           tail -n 100 /home/runner/work/_temp/_runner_file_commands/* >> debug_page.html || echo "无日志" >> debug_page.html
           echo "</pre></body></html>" >> debug_page.html
-
 
       - name: Create index.html for GH Pages
         run: |
