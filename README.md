@@ -18,10 +18,10 @@
 
 ## 数据展示
 
-最新粉丝数趋势图：
+旺仔小乔最新粉丝数趋势图：
 
 ![粉丝趋势图](fans_trend.png)
 
 ## 定时设置
 
-默认配置为每天更新三次（北京时间8:00, 14:00, 20:00），可以在`.github/workflows/tiktok-fans-tracker.yml`文件中修改定时设置。
+每天执行一次，可以在`.github/workflows/tiktok-fans-tracker.yml`文件中修改定时设置。
