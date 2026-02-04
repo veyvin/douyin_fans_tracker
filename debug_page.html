@@ -1399,7 +1399,7 @@ var A11yStrings;(function(A11yStrings){A11yStrings["ARIA_LABEL"]="dinoGameA11yAr
 // Copyright 2013 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-let showingDetails=false;let lastData=null;let dinoGameInitialized=false;function toggleHelpBox(){showingDetails=!showingDetails;assert(lastData);B(getHtml(lastData,showingDetails),getRequiredElement("content"))}function diagnoseErrors(){if(window.errorPageController){window.errorPageController.diagnoseErrorsButtonClick()}}function portalSignin(){if(window.errorPageController){window.errorPageController.portalSigninButtonClick()}}let isSubFrame=false;if(window.top.location!==window.location){document.documentElement.setAttribute("subframe","");isSubFrame=true}function updateForDnsProbe(newData){updateInitialInstruction(newData);onTemplateDataReceived(newData)}function getMainFrameErrorCssClass(showingDetails){return showingDetails?"showing-details":""}function getMainFrameErrorIconCssClass(data){return isSubFrame?"":data.iconClass}function getSubFrameErrorIconCssClass(data){return isSubFrame?data.iconClass:""}function shouldShowSuggestionsSummaryList(data){return!!data.suggestionsSummaryList&&data.suggestionsSummaryList.length>0}function getSuggestionsSummaryItemCssClass(data){assert(data.suggestionsSummaryList);return data.suggestionsSummaryList.length===1?"single-suggestion":""}function reloadButtonClick(e){const url=e.target.dataset["url"];if(window.errorPageController){window.errorPageController.reloadButtonClick()}else{assert(url);window.location.href=url}}function downloadButtonClick(){if(window.errorPageController){window.errorPageController.downloadButtonClick();const downloadButton=getRequiredElement("download-button");downloadButton.disabled=true;downloadButton.textContent=downloadButton.disabledText}}function detailsButtonClick(){if(window.errorPageController){window.errorPageController.detailsButtonClick()}toggleHelpBox()}function setAutoFetchState(scheduled,canSchedule){getRequiredElement("cancel-save-page-button").classList.toggle(HIDDEN_CLASS,!scheduled);getRequiredElement("save-page-for-later-button").classList.toggle(HIDDEN_CLASS,!canSchedule)}function savePageLaterClick(){assert(window.errorPageController);window.errorPageController.savePageForLater()}function cancelSavePageClick(){assert(window.errorPageController);window.errorPageController.cancelSavePage();setAutoFetchState(false,true)}function shouldShowControlButtons(data){const downloadButtonVisible=!!data.downloadButton&&!!data.downloadButton.msg;const reloadButtonVisible=!!data.reloadButton&&!!data.reloadButton.msg;return reloadButtonVisible||downloadButtonVisible}function shouldShowDetailsButton(data){return!!data.suggestionsDetails&&data.suggestionsDetails.length>0}function getDetailsButtonCssClass(data){return shouldShowControlButtons(data)?"":"singular"}function getDetailsButtonText(data,showingDetails){assert(data.details);assert(data.hideDetails);return showingDetails?data.hideDetails:data.details}function getButtonsCssClass(){let primaryControlOnLeft=true;primaryControlOnLeft=false;return primaryControlOnLeft?"suggested-left":"suggested-right"}function updateInitialInstruction(data){if(!data.isOfflineError){return}if(navigator.maxTouchPoints===0){data.heading.msg=data.dinoGameInstructionsKeyboard;data.dinoGameA11yAriaLabel=data.dinoGameA11yAriaLabelKeyboard}else if(window.matchMedia("(hover: hover)").matches){data.heading.msg=data.dinoGameInstructionsHybrid;data.dinoGameA11yAriaLabel=data.dinoGameA11yAriaLabelHybrid}else{data.heading.msg=data.dinoGameInstructionsTouch;data.dinoGameA11yAriaLabel=data.dinoGameA11yAriaLabelTouch}}function onDocumentLoad(){const data=window.loadTimeDataRaw;updateInitialInstruction(data);onTemplateDataReceived(data)}function onTemplateDataReceived(newData){lastData=newData;B(getHtml(lastData,showingDetails),getRequiredElement("content"));if(!isSubFrame&&newData.iconClass==="icon-offline"){document.documentElement.classList.add("offline");if(!dinoGameInitialized){loadTimeData.data=newData;Runner.initializeInstance(".interstitial-wrapper");dinoGameInitialized=true}}}function getHtml(data,showingDetails){return x`
+let showingDetails=false;let lastData=null;function toggleHelpBox(){showingDetails=!showingDetails;assert(lastData);B(getHtml(lastData,showingDetails),getRequiredElement("content"))}function diagnoseErrors(){if(window.errorPageController){window.errorPageController.diagnoseErrorsButtonClick()}}function portalSignin(){if(window.errorPageController){window.errorPageController.portalSigninButtonClick()}}let isSubFrame=false;if(window.top.location!==window.location){document.documentElement.setAttribute("subframe","");isSubFrame=true}function updateForDnsProbe(newData){onTemplateDataReceived(newData)}function getMainFrameErrorCssClass(showingDetails){return showingDetails?"showing-details":""}function getMainFrameErrorIconCssClass(data){return isSubFrame?"":data.iconClass}function getSubFrameErrorIconCssClass(data){return isSubFrame?data.iconClass:""}function shouldShowSuggestionsSummaryList(data){return!!data.suggestionsSummaryList&&data.suggestionsSummaryList.length>0}function getSuggestionsSummaryItemCssClass(data){assert(data.suggestionsSummaryList);return data.suggestionsSummaryList.length===1?"single-suggestion":""}function reloadButtonClick(e){const url=e.target.dataset["url"];if(window.errorPageController){window.errorPageController.reloadButtonClick()}else{assert(url);window.location.href=url}}function downloadButtonClick(){if(window.errorPageController){window.errorPageController.downloadButtonClick();const downloadButton=getRequiredElement("download-button");downloadButton.disabled=true;downloadButton.textContent=downloadButton.disabledText}}function detailsButtonClick(){if(window.errorPageController){window.errorPageController.detailsButtonClick()}toggleHelpBox()}function setAutoFetchState(scheduled,canSchedule){getRequiredElement("cancel-save-page-button").classList.toggle(HIDDEN_CLASS,!scheduled);getRequiredElement("save-page-for-later-button").classList.toggle(HIDDEN_CLASS,!canSchedule)}function savePageLaterClick(){assert(window.errorPageController);window.errorPageController.savePageForLater()}function cancelSavePageClick(){assert(window.errorPageController);window.errorPageController.cancelSavePage();setAutoFetchState(false,true)}function shouldShowControlButtons(data){const downloadButtonVisible=!!data.downloadButton&&!!data.downloadButton.msg;const reloadButtonVisible=!!data.reloadButton&&!!data.reloadButton.msg;return reloadButtonVisible||downloadButtonVisible}function shouldShowDetailsButton(data){return!!data.suggestionsDetails&&data.suggestionsDetails.length>0}function getDetailsButtonCssClass(data){return shouldShowControlButtons(data)?"":"singular"}function getDetailsButtonText(data,showingDetails){assert(data.details);assert(data.hideDetails);return showingDetails?data.hideDetails:data.details}function getButtonsCssClass(){let primaryControlOnLeft=true;primaryControlOnLeft=false;return primaryControlOnLeft?"suggested-left":"suggested-right"}function onDocumentLoad(){onTemplateDataReceived(window.loadTimeDataRaw)}function onTemplateDataReceived(newData){lastData=newData;B(getHtml(lastData,showingDetails),getRequiredElement("content"));if(!isSubFrame&&newData.iconClass==="icon-offline"){document.documentElement.classList.add("offline");loadTimeData.data=newData;Runner.initializeInstance(".interstitial-wrapper")}}function getHtml(data,showingDetails){return x`
     <div id="main-frame-error" class="interstitial-wrapper ${getMainFrameErrorCssClass(showingDetails)}">
       <div id="main-content">
         <div class="icon ${getMainFrameErrorIconCssClass(data)}"></div>
@@ -1484,7 +1484,7 @@ let showingDetails=false;let lastData=null;let dinoGameInitialized=false;functio
         </div>
       </div>
     `:""}
-  `}Object.assign(window,{diagnoseErrors:diagnoseErrors,portalSignin:portalSignin,toggleHelpBox:toggleHelpBox,updateForDnsProbe:updateForDnsProbe,updateInitialInstruction:updateInitialInstruction});document.addEventListener("DOMContentLoaded",onDocumentLoad);</script>
+  `}Object.assign(window,{diagnoseErrors:diagnoseErrors,portalSignin:portalSignin,toggleHelpBox:toggleHelpBox,updateForDnsProbe:updateForDnsProbe});document.addEventListener("DOMContentLoaded",onDocumentLoad);</script>
 
 </head>
 <body class="neterror" style="font-family: &quot;sans&quot;, Arial, sans-serif; font-size: 75%">
@@ -1496,15 +1496,15 @@ let showingDetails=false;let lastData=null;let dinoGameInitialized=false;functio
           <h1>
             <span>This site can’t be reached</span>
           </h1>
-          <!--?lit$417880731$-->
+          <!--?lit$107271838$-->
             <p><strong>www.douyin.com</strong> took too long to respond.</p>
           
 
-          <!--?lit$417880731$-->
+          <!--?lit$107271838$-->
             <div id="suggestions-list">
-              <p><!--?lit$417880731$-->Try:</p>
+              <p><!--?lit$107271838$-->Try:</p>
               <ul class="">
-                <!--?lit$417880731$--><!---->
+                <!--?lit$107271838$--><!---->
                   <li>Checking the connection</li>
                 <!----><!---->
                   <li><a href="#buttons" onclick="toggleHelpBox()">Checking the proxy and the firewall</a></li>
@@ -1513,30 +1513,30 @@ let showingDetails=false;let lastData=null;let dinoGameInitialized=false;functio
             </div>
           
 
-          <div class="error-code"><!--?lit$417880731$-->ERR_TIMED_OUT</div>
+          <div class="error-code"><!--?lit$107271838$-->ERR_TIMED_OUT</div>
 
-          <!--?lit$417880731$-->
+          <!--?lit$107271838$-->
         </div>
       </div>
       <div id="buttons" class="nav-wrapper suggested-right">
         <div id="control-buttons">
-          <!--?lit$417880731$-->
+          <!--?lit$107271838$-->
             <button id="reload-button" class="blue-button text-button" data-url="https://www.douyin.com/user/MS4wLjABAAAACdtHOv8XS_X_PTuqJ3WReO4ka7pBWg7fmzG4wjiIZVkUKFOVtbhizl9GkpdOJ-O1">
-              <!--?lit$417880731$-->Reload
+              <!--?lit$107271838$-->Reload
             </button>
           
-          <!--?lit$417880731$-->
+          <!--?lit$107271838$-->
         </div>
-        <!--?lit$417880731$-->
+        <!--?lit$107271838$-->
           <button id="details-button" class="secondary-button text-button
               small-link ">
-            <!--?lit$417880731$-->Details
+            <!--?lit$107271838$-->Details
           </button>
         
       </div>
-      <!--?lit$417880731$-->
+      <!--?lit$107271838$-->
         <div id="details">
-          <!--?lit$417880731$--><!---->
+          <!--?lit$107271838$--><!---->
             <div class="suggestions">
               <div class="suggestion-header">Check your Internet connection</div>
               <div class="suggestion-body">Check any cables and reboot any routers, modems, or other network
@@ -1565,7 +1565,7 @@ let showingDetails=false;let lastData=null;let dinoGameInitialized=false;functio
         </div>
       
     </div>
-    <!--?lit$417880731$-->
+    <!--?lit$107271838$-->
       <div id="sub-frame-error">
         <!-- Show details when hovering over the icon, in case the details are
              hidden because they're too large. -->
@@ -1585,4 +1585,4 @@ let showingDetails=false;let lastData=null;let dinoGameInitialized=false;functio
   </div>
 
 
-<script>var loadTimeDataRaw = {"details":"Details","errorCode":"ERR_TIMED_OUT","fontfamily":"\"sans\", Arial, sans-serif","fontfamilyMd":"Roboto, \"sans\", Arial, sans-serif","fontsize":"75%","heading":{"msg":"This site can’t be reached"},"hideDetails":"Hide details","iconClass":"icon-generic","isOfflineError":false,"language":"en","reloadButton":{"msg":"Reload","reloadUrl":"https://www.douyin.com/user/MS4wLjABAAAACdtHOv8XS_X_PTuqJ3WReO4ka7pBWg7fmzG4wjiIZVkUKFOVtbhizl9GkpdOJ-O1"},"suggestionsDetails":[{"body":"Check any cables and reboot any routers, modems, or other network\n    devices you may be using.","header":"Check your Internet connection"},{"body":"If it is already listed as a program allowed to access the network, try\n      removing it from the list and adding it again.","header":"Allow Chromium to access the network in your firewall or antivirus\n          settings."},{"body":"Go to\n          the Chromium menu >\n          \u003Cspan>Settings\u003C/span>\n          >\n          \u003Cspan>System\u003C/span>\n          >\n          \u003Cspan>Open your computer's proxy settings\u003C/span>\n          and make sure your configuration is set to \"no proxy\" or \"direct.\"","header":"If you use a proxy server…"}],"suggestionsSummaryList":[{"summary":"Checking the connection"},{"summary":"\u003Ca href=\"#buttons\" onclick=\"toggleHelpBox()\">Checking the proxy and the firewall\u003C/a>"}],"suggestionsSummaryListHeader":"Try:","summary":{"msg":"\u003Cstrong>www.douyin.com\u003C/strong> took too long to respond."},"textdirection":"ltr","title":"www.douyin.com"};</script></body></html>
+<script>var loadTimeDataRaw = {"details":"Details","errorCode":"ERR_TIMED_OUT","fontfamily":"\"sans\", Arial, sans-serif","fontfamilyMd":"Roboto, \"sans\", Arial, sans-serif","fontsize":"75%","heading":{"msg":"This site can’t be reached"},"hideDetails":"Hide details","iconClass":"icon-generic","language":"en","reloadButton":{"msg":"Reload","reloadUrl":"https://www.douyin.com/user/MS4wLjABAAAACdtHOv8XS_X_PTuqJ3WReO4ka7pBWg7fmzG4wjiIZVkUKFOVtbhizl9GkpdOJ-O1"},"suggestionsDetails":[{"body":"Check any cables and reboot any routers, modems, or other network\n    devices you may be using.","header":"Check your Internet connection"},{"body":"If it is already listed as a program allowed to access the network, try\n      removing it from the list and adding it again.","header":"Allow Chromium to access the network in your firewall or antivirus\n          settings."},{"body":"Go to\n          the Chromium menu >\n          \u003Cspan>Settings\u003C/span>\n          >\n          \u003Cspan>System\u003C/span>\n          >\n          \u003Cspan>Open your computer's proxy settings\u003C/span>\n          and make sure your configuration is set to \"no proxy\" or \"direct.\"","header":"If you use a proxy server…"}],"suggestionsSummaryList":[{"summary":"Checking the connection"},{"summary":"\u003Ca href=\"#buttons\" onclick=\"toggleHelpBox()\">Checking the proxy and the firewall\u003C/a>"}],"suggestionsSummaryListHeader":"Try:","summary":{"msg":"\u003Cstrong>www.douyin.com\u003C/strong> took too long to respond."},"textdirection":"ltr","title":"www.douyin.com"};</script></body></html>
